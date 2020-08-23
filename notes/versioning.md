@@ -36,26 +36,38 @@ software that is in the master branch is released. Each released version is
 tagged with a Git tag.
 
 ### Development
-    Branched off from Master
+Branched off from Master
+
+    $ git checkout -b development master
 
 Code in the development branch most likely will have code that is between 
 different releases it has more functions as the last release and is intended
 to be released with the next version.
 
-    Branched into Master
+Branched into Master
+
+    $ git checkout master
+    $ git merge development
 
 ### Feature
-    Branched off from Development
+Branched off from Development
+
+    $ git checkout -b feature development
 
 When a new feature for the software is developed this is done in a feature
 branch that is branched off from master. In this branch only the specific
-feature is developed. After the feature is tested and the tests are green it is
-merged back to deveopment
+feature is developed. After the feature is tested and the tests are green it 
+is merged back to deveopment
 
-    Merged into Development
+Merged into Development
+
+    $ git checkout development
+    $ git merge feature
 
 ### Release
-    Branched off from Development
+Branched off from Development
+
+    $ git checkout -b release-0.1.0 develop
 
 When the software is ready to be released as a new version it is as an
 intermediate step branched into a release branch where it is tested. If the 
@@ -73,18 +85,30 @@ A release branch goes through 3 stages indicated by a version suffix.
 * Production (verion x.y.z). The release branch is merged to production and
   back to development.
 
-    Merged into Master
-    Merged into Development
+Merged into Master
+Merged into Development
+
+    $ git checkout master
+    $ git merge release-0.1.0
+    $ git checkout development
+    $ git merge release-0.1.0
 
 ### Hotfix
-    Branched off from Master
+Branched off from Master
+
+    $ git checkout -b hoftix-0.1.1
 
 If a released software version has an identified bug the software is branched
 off into a hotfix branch.
 
-    Merged back to Master
-    Merged to Deveopment
-    Merged to Release if currently open
+Merged back to Master
+Merged to Deveopment
+Merged to Release if currently open
+
+    $ git checkout master
+    $ git merge hotfix-0.1.1
+    $ git checkout development
+    $ git merge hotfix-0.1.1
 
 ## Versioning
 A version number consist of 3 digits separated by dots `.` and optionally a 
