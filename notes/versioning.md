@@ -55,9 +55,9 @@ Branched off from Development
     $ git checkout -b feature development
 
 When a new feature for the software is developed this is done in a feature
-branch that is branched off from master. In this branch only the specific
+branch that is branched off from development. In this branch only the specific
 feature is developed. After the feature is tested and the tests are green it 
-is merged back to deveopment
+is merged back to development
 
 Merged into Development
 
@@ -79,7 +79,7 @@ A release branch goes through 3 stages indicated by a version suffix.
 * Beta (version x.y.z-beta) is deployed to the beta server and tested by few
   persons to test the functionality.
 
-* Staging (version x.y.z-alpha) is deployed to the staging server and is
+* Staging (version x.y.z-staging) is deployed to the staging server and is
   tested simultaniously by more people to test load behaviour.
 
 * Production (verion x.y.z). The release branch is merged to production and
@@ -112,7 +112,7 @@ Merged to Release if currently open
 
 ## Versioning
 A version number consist of 3 digits separated by dots `.` and optionally a 
-suffix (beta, alpha).
+suffix (beta, staging).
 
     Version 1.2.3-suffix
             | | | + stage of stability
@@ -136,7 +136,7 @@ suffix (beta, alpha).
 * _Suffix_ has two stages
     * Beta - the application is deployed to beta server where a few users are
       testing the application based on a test catalog
-    * Alpha - the application is deployed to the staging server where several
+    * Staging - the application is deployed to the staging server where several
       users do a load test
     * no suffix - the application is in production
 
@@ -145,14 +145,14 @@ _sycersion_ is incrementing the current version of the application at the
 position that is indicated as a parameter (major, minor, patch) and
 optionally appended the suffix if provided.
 
-    $ sycersion --increment minor --suffix alpha
+    $ sycersion --increment minor --suffix staging
 
-If the there is no version set yet this will create a version 0.1.0-alpha.
+If the there is no version set yet this will create a version 0.1.0-beta.
 Alternatively an initial version can be provided
 
-    $ sycersion --major 1 --minor 1 --patch 0 --suffix alpha
+    $ sycersion --major 1 --minor 1 --patch 0 --suffix beta
 
-Which will create a version __1.1.0-alpha__.
+Which will create a version __1.1.0-beta__.
 
 Determining the current version is following a retrievement strategy from 1
 to 3:
