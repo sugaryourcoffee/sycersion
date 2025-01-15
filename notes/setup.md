@@ -4,17 +4,63 @@ following the semantic versioning as defined in [semver.org](sever.org).
 
 ## Development environment
 The application is written in Ruby in a test driven development manner using
-rspec. We are managing our source code in git.
+rspec and cucumber with aruba. We are managing our source code in git.
 
-To set up the environment we do
+There are two ways of setting up the development environment.
+
+1. Using bundler to create a standard directory structure with most of the
+   files or
+2. Set up the structure manually
+
+### Setup with bundler
+To use bundler [bundler.io](https://bundler.io/guides/creating_gem.html) we just go into our working directory, select the Ruby version
+we want to work with and then issue the bundle command
+
+    $ cd ~/Work
+    $ rvm ruby-2.5.7
+    $ rvm gemset create sycersion
+    $ rvm ruby-2.5.7@sycersio
+    $ bundle gem sycersion
+
+This will create a directory `~/Work/sycersion` with a directory structure
+
+    +-- bin
+    |   +-- console
+    |   +-- setup
+    +-- CODE_OF_CONDUCT.md
+    +-- Gemfile
+    +-- Gemfile.lock
+    +-- lib
+    |   +-- sycersion
+    |   |   +-- version.rb
+    |   +-- sycersion.rb
+    +-- LICENSE.txt
+    +-- Rakefile
+    +-- README.md
+    +-- spec
+    |   +-- spec_helper.rb
+    |   +-- sycersion_spec.rb
+    +-- sycersion.gemspec
+
+The `bundle gem sycersion` is also installing rspec and intializtion our git
+repository. To also install _aruba_ we add it as an development dependency
+to `sycersion.gemspec and run "bundle install".
+
+In order to use _aruba_ with _cucumber_ we have to run
+
+    $ cucumber --init
+      create   features
+      create   features/step_definitions
+      create   features/support
+      create   features/support/env.rb
+
+### Setup manually
+To set up the environment manually we do
 
 * create a working directory
 * create a gemset for the application
-* install rspec
+* install rspec and aruba
 * add the application directory to git
-
-### Create the working directory
-We setup a working directory structure
 
     $ mkdir ~/Work/sycversion
     $ cd ~/Work/sycversion
@@ -23,7 +69,6 @@ We setup a working directory structure
     $ mkdir lib
     $ touch README.rdoc
 
-### Create the gemset
 We select the ruby version we want to develop the application with and create
 the gemset for that ruby version
 
@@ -34,21 +79,22 @@ Change to the gemset sycversion
 
     $ rvm ruby-2.5.7@sycversion
 
-### Install rspec
+Install respec and aruba for tests
 
     $ gem install rspec
+    $ gem install aruba
 
 Initialize test environment
 
     $ rspec --init
 
-### Add the working directory to git
+Add the working directory to git
 
     $ git init
     $ git add .
     $ git commit -am "initial commit"
 
-### Directory struckture after setup
+Directory struckture after setup
 
     +-bin
     +-doc
