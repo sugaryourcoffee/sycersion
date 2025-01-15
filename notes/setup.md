@@ -13,7 +13,7 @@ There are two ways of setting up the development environment.
 2. Set up the structure manually
 
 ### Setup with bundler
-To use bundler we just go into our working directory, select the Ruby version
+To use bundler [bundler.io](https://bundler.io/guides/creating_gem.html) we just go into our working directory, select the Ruby version
 we want to work with and then issue the bundle command
 
     $ cd ~/Work
