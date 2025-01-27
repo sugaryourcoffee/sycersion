@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'sycersion/runner'
+
+# Kicking off the application by reading the arguments from commandline and
+# forwarding it to the `Runner` which is operating on the ARGV that is holding
+# the command line arguments
+runner = Sycersion::Runner.new(ARGV)
+runner.run
