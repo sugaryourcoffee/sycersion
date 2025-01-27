@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'sycersion/runner'
+require_relative '../lib/sycersion'
 
 # Kicking off the application by reading the arguments from commandline and
 # forwarding it to the `Runner` which is operating on the ARGV that is holding
