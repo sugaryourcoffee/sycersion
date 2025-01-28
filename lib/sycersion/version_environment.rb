@@ -4,14 +4,12 @@ require 'yaml'
 require 'fileutils'
 
 module Sycersion
-  VERSION_REGEX = /(\d+\.\d+\.\d+)-?(beta|staging|\w*)/.freeze
+  SYCERSION_DIR = '.sycersion'
+  SYCERSION_ENV = '.sycersion/environment.yml'
+  SYCERSION_VER = '.sycersion/version'
 
   # Creates a version and a version file where the version is stored to.
   class VersionEnvironment
-    SYCERSION_DIR = '.sycersion'
-    SYCERSION_ENV = '.sycersion/environment.yml'
-    SYCERSION_VER = '.sycersion/version'
-
     attr_accessor :version
 
     def initialize
@@ -44,8 +42,8 @@ module Sycersion
     def summary_of_environment
       puts "\nWhere to find the configuration files"
       puts "-------------------------------------\n"
-      puts "\nDirectory #{SYCERSION_DIR}"
-      puts "Configuration file #{SYCERSION_ENV}\n"
+      puts "\nDirectory:          #{SYCERSION_DIR}"
+      puts "Configuration file: #{SYCERSION_ENV}\n"
       puts "\nChange the configuration file only if you know what you are doing."
       puts 'Otherwise run `sycersion --init` again.'
     end
@@ -54,7 +52,7 @@ module Sycersion
       files = Dir.glob('**/*version*')
       files.each do |file|
         File.readlines(file, chomp: true).each do |line|
-          scan_result = line.scan(VERSION_REGEX)
+          scan_result = line.scan(Sycersion::SEMVER_LAX_REGEX)
           if scan_result[0]
             @version_files[file] = [scan_result[0], line]
             break
@@ -88,42 +86,56 @@ module Sycersion
       selection = gets.chomp
       @version_file = selection.empty? ? SYCERSION_VER : selection
       print 'To use `0.0.1` as initial version hit RETURN or specify own version: '
-      selection = gets.chomp.scan(VERSION_REGEX)
+      selection = gets.chomp.scan(Sycersion::SEMVER_REGEX)
       @version = selection.empty? ? @version : selection
       @version_string = @version
     end
 
     def select_version_and_version_file
       puts "\nFound version-files\n"
-      puts "---------------------\n"
+      puts "-------------------\n"
       list_versions_and_version_files
-      print "\nChoose version-file and version with number or hit return for 0: "
+      print "\nChoose version-file and version with number or hit return for [0]: "
       selection = gets.chomp.to_i
       app_version_file = @version_files.keys[selection]
-      @version = semver_string(@version_files[app_version_file][0])
+      @version = Sycersion::Semver.version(@version_files[app_version_file][0])
       @version_string = @version_files[@version_file[1]]
     end
 
     def list_versions_and_version_files
+      digits = digit_counter(@version_files)
+      filler = filler_string(' ', digits + 2)
       @version_files.each_with_index do |entry, index|
-        puts "#{index}: #{entry[0]} (version: #{semver_string(entry[1][0])} in #{entry[1][1]})"
+        choice = "[#{index.to_s.rjust(digits, ' ')}]"
+        print_line(choice, 'file:   ', entry[0])
+        print_line(filler, 'version:', Sycersion::Semver.version(entry[1][0]))
+        print_line(filler, 'line:   ', (entry[1][1]).strip)
       end
     end
 
-    def semver_string(version_array)
-      version_array[1].empty? ? version_array[0] : version_array.join('-')
+    def digit_counter(object)
+      object.size.to_s.length
+    end
+
+    def filler_string(fill_char, size)
+      fill_char * size
+    end
+
+    def print_line(prescriptor, descriptor, value)
+      puts "#{prescriptor} #{descriptor} #{value}"
     end
 
     def create_code_snippet(version_file)
       <<-CODE_SNIP
-      \nIn your application you can now access the version with
 
-              File.read(#{version_file})
+      In your application you can now access the version with
+
+      > File.read(#{version_file})
 
       If you application framework has a defined place to assign
       the version you could do like so
 
-              version = File.read(#{version_file})
+      > version = File.read(#{version_file})
       CODE_SNIP
     end
 
