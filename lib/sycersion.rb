@@ -19,14 +19,15 @@ module Sycersion
 
     def run
       if @options[:init]
-        version_environment = Sycersion::VersionEnvironment.new
-        version_environment.setup
+        Sycersion::VersionEnvironment.new.setup
       elsif @options[:set]
-        Sycersion::VersionSetter.new(@options)
+        Sycersion::VersionSetter.new.version = (@options[:set])
+      elsif @options[:suffix]
+        Sycersion::VersionSetter.new.suffix = (@options[:suffix])
       elsif @options[:inc]
         Sycersion::VersionChanger.new(@options)
       elsif @options[:info]
-        Sycersion::VersionInfo.new(@options)
+        puts Sycersion::VersionInfo.new.process(@options)
       end
     end
   end

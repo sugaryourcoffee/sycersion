@@ -26,7 +26,7 @@ module Sycersion
           @options[:init] = opt
         end
 
-        opts.on('-i', '--info [VERSION|ALL]', %i[version all],
+        opts.on('-i', '--info [VERSION|SUMMARY]', %i[version summary],
                 'Print information about the application version and environment',
                 '* current version of the application (default)',
                 '* file where the app version is stored',
@@ -60,7 +60,7 @@ module Sycersion
         parser.parse!
       rescue OptionParser::ParseError => e
         warn e.message, "\n", options
-        puts opts
+        puts 'Run `sycersion --help` to see a full list of options'
         exit(1)
       end
     end
