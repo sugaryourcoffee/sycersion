@@ -4,7 +4,7 @@ require_relative 'sycersion/version'
 require_relative 'sycersion/options'
 require_relative 'sycersion/version_environment'
 require_relative 'sycersion/version_setter'
-require_relative 'sycersion/version_changer'
+require_relative 'sycersion/version_incrementer'
 require_relative 'sycersion/version_info'
 
 module Sycersion
@@ -25,7 +25,7 @@ module Sycersion
       elsif @options[:suffix]
         Sycersion::VersionSetter.new.suffix = (@options[:suffix])
       elsif @options[:inc]
-        Sycersion::VersionChanger.new(@options)
+        Sycersion::VersionIncrementer.new.increment(@options[:inc])
       elsif @options[:info]
         puts Sycersion::VersionInfo.new.process(@options)
       end
