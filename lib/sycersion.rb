@@ -6,6 +6,7 @@ require_relative 'sycersion/version_environment'
 require_relative 'sycersion/version_setter'
 require_relative 'sycersion/version_incrementer'
 require_relative 'sycersion/version_info'
+require_relative 'sycersion/version_compare'
 require_relative 'sycersion/semver'
 
 module Sycersion
@@ -15,12 +16,13 @@ module Sycersion
   class Runner
     def initialize(argv)
       @options = Options.new(argv).options
-      pp @options if ENV['SYC_DEBUGW']
+      pp @options if ENV['SYC_DEBUG']
     end
 
     def run
       environment_settings
       version_manipulation
+      version_compare
       configuration_information
     end
 
@@ -30,15 +32,19 @@ module Sycersion
 
     def version_manipulation
       case @options
-      when :set
+      when ->(h) { h[:set] }
         Sycersion::VersionSetter.new.version = (@options[:set])
-      when :pre_release
+      when ->(h) { h[:pre_release] }
         Sycersion::VersionSetter.new.pre_release = (@options[:pre_release])
-      when :build
+      when ->(h) { h[:build] }
         Sycersion::VersionSetter.new.build = (@options[:build])
-      when :inc
+      when ->(h) { h[:inc] }
         Sycersion::VersionIncrementer.new.increment(@options[:inc])
       end
+    end
+
+    def version_compare
+      puts Sycersion::VersionCompare.new.compare(@options[:compare]) if @options[:compare]
     end
 
     def configuration_information

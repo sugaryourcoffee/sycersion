@@ -31,7 +31,6 @@ module Sycersion
     # major.minor.patch-per-release+build. If only a build is given it creates
     # major.minor.patch+build.
     def self.version(semver_array)
-      puts semver_array.inspect
       semver = "#{semver_array[0]}.#{semver_array[1]}.#{semver_array[2]}"
       semver += "-#{semver_array[3]}" unless semver_array[3].to_s.empty?
       semver += "+#{semver_array[4]}" unless semver_array[4].to_s.empty?

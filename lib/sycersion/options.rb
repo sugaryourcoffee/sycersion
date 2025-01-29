@@ -60,6 +60,11 @@ module Sycersion
           @options[:build] = opt
         end
 
+        opts.on('-c', '--compare VERSION', Sycersion::SEMVER_REGEX,
+                'Compare current version with VERSION regarding precedence') do |opt|
+          @options[:compare] = opt
+        end
+
         opts.on('-h', '--help', 'Show this help') do
           puts opts
           exit(0)
@@ -67,6 +72,7 @@ module Sycersion
       end
 
       begin
+        puts "Run `#{File.basename($PROGRAM_NAME)} --help` for usage information" if ARGV.empty?
         parser.parse!
       rescue OptionParser::ParseError => e
         warn e.message, "\n", options
@@ -77,10 +83,11 @@ module Sycersion
     end
 
     def banner
+      program_name = File.basename($PROGRAM_NAME)
       <<-CL_BANNER
-        Usage: sycersion [options]
+        Usage: #{program_name} [options]
 
-        sycersion supports applications to manage semantic versioning. Details
+        #{program_name} supports applications to manage semantic versioning. Details
         can be found at https://semver.org
 
       CL_BANNER
