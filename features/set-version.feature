@@ -1,11 +1,12 @@
 Feature: I can set the version 
   When I create a new application, I want to set the intitial version following
-  the semver guiding principles. A fresh install won't have a .sycersion/version file.
+  the semver guiding principles. A fresh install won't have a .sycersion/version
+  file.
 
 Scenario: The default version is shown
     Given the file "./.sycersion/version" doesn't exist
     When I successfully run `sycersion -i`
-    Then the stdout should contain "0.0.1"
+    Then the stdout should contain "0.1.0"
 
 Scenario: Set the version core
     When I successfully run `sycersion --set 0.1.1`

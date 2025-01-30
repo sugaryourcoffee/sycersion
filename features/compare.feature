@@ -42,4 +42,9 @@ Scenario: A valid comparison is 1.0.0-rc.1 < 1.0.0
     When I successfully run `sycersion --c 1.0.0`
     Then the stdout should contain "1.0.0-rc.1 < 1.0.0"
 
+Scenario: A valid comparison is 1.0.0 < 1.1.0
+    When I successfully run `sycersion --set 1.0.0`
+    When I successfully run `sycersion --c 1.1.0`
+    Then the stdout should contain "1.0.0 < 1.1.0"
+
 
