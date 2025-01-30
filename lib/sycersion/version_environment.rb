@@ -53,14 +53,26 @@ module Sycersion
     def determine_version_and_version_file
       files = Dir.glob('**/*version*')
       files.each do |file|
-        File.readlines(file, chomp: true).each do |line|
-          scan_result = line.scan(Sycersion::SEMVER_LAX_REGEX)
-          if scan_result[0]
-            @version_files[file] = [scan_result[0], line]
-            break
-          end
+        next if File.directory?(file)
+
+        retrieve_version_files(file)
+      end
+    end
+
+    def retrieve_version_files(file)
+      File.readlines(file, chomp: true).each do |line|
+        scan_result = scan_for_version(line)
+        if scan_result
+          @version_files[file] = [scan_result, line]
+          break
         end
       end
+    end
+
+    def scan_for_version(line)
+      line.scan(Sycersion::SEMVER_LAX_REGEX)[0]
+    rescue ArgumentError
+      []
     end
 
     def prompt_version_and_version_file
