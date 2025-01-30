@@ -1,6 +1,3 @@
 ---
 - ".sycersion/version"
-- 0.1.0
-- lib/sycersion/version.rb
-- 'VERSION = File.exist?(''.sycersion/version'') ? File.read(''.sycersion/version'')
-  : ''0.1.0'''
+- 0.2.0
