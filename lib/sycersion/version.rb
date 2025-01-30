@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Sycersion
-  VERSION = '0.1.0'
+  VERSION = File.exist?('.sycersion/version') ? File.read('.sycersion/version') : '0.1.0'
 end
