@@ -1,0 +1,181 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "SYCERSION" "1" "January 2025" "" ""
+.
+.SH "NAME"
+\fBsycersion\fR \- manage application versions according to semantic versioning
+.
+.SH "SYNOPSIS"
+.
+.nf
+
+`sycersion` `\-\-init`
+`sycersion` `\-i`|`\-\-info`
+`sycersion` `\-\-inc major|minor|patch`
+`sycersion` `\-\-set major\.minor\.patch[+build|\-pre\-release+build]`
+`sycersion` `\-p`|`\-\-pre` `pre\-release`
+`sycersion` `\-b`|`\-\-build` `build`
+`sycersion` `\-c`|`\-\-compare` `version`
+`sycersion` `\-h`|`\-\-help`
+.
+.fi
+.
+.SH "Description"
+\fBsycersion\fR is a command\-line tool to manage application versions following the guiding principles of \fIsemantic versioning\fR semver\.org \fIhttps://semver\.org\fR\.
+.
+.P
+To use \fBsycersion\fR it needs to be initialized, that is define the \fIversion\-file\fR and the \fIversion\fR\. During initialization also the \fIconfiguration\-directory\fR is created\. While initialization \fBsycersion\fR searches for files that contain a version according to semantic versioning and the user can select out of the list of files which version out of that files to intially start with\.
+.
+.P
+The version defined by the user is saved to a default version file, but it can also be chosen by the user\. If the version is updated the version is written into that file\. Within the application the version can be read from the file and displayed somewhere in the application\'s UI\.
+.
+.P
+\fBsycersion\fR evaluates version numbers provided that they comply to semantic versioning\.
+.
+.P
+If \fBsycersion\fR is used within a \fIRuby\fR application, it can be added to the development section within the Gemfile\.
+.
+.SH "FILES"
+.
+.nf
+
+`\.sycersion` is the configuration directory
+`\.sycersion/environment\.yml` holds the version file and the version
+`\.sycersion/version` contains the version
+.
+.fi
+.
+.SH "OPTIONS"
+.
+.IP "\(bu" 4
+\fB\-\-init\fR Initializes the \fBsycersion\fR environment with \fIversion\fR and \fIversion\-file\fR
+.
+.IP "\(bu" 4
+\fB\-i\fR, \fB\-\-info VERSION|SUMMARY\fR Shows the current \fIversion\fR (default) or additionally information about the \fIversion\-file\fR, the \fIconfiguration\-directory\fR and \fIcode\fR how to read the version within an application\.
+.
+.IP "\(bu" 4
+\fB\-\-inc MAJOR|MINOR|PATCH\fR increments the major, minor, patch part of the version\.
+.
+.IP "\(bu" 4
+\fB\-\-set MAJOR\.MINOR\.PATCH[+BUILD|\-PRE_RELEASE[+BUILD]]\fR sets the version where all three version parts need to be provided, major\.minor\.patch with optionally adding a pre\-release part and/or a build part\.
+.
+.IP "\(bu" 4
+\fB\-\-pre PRE\-RELEASE\fR Set the pre\-release part in the version
+.
+.IP "\(bu" 4
+\fB\-\-build BUILD\fR Set the build part in the version
+.
+.IP "\(bu" 4
+\fB\-c\fR, \fB\-\-compare VERSION\fR Compares the current version with the version provided following the semver precedence guidline
+.
+.IP "\(bu" 4
+\fB\-\-help\fR Prints the command line help
+.
+.IP "" 0
+.
+.SH "EXAMPLES"
+Initialize \fBsycersion\fR
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-\-init
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Set the version with pre\-release
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-\-set 0\.1\.1\-beta\.1\.0
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Set the version with a build
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-\-set 0\.1\.1+build\-a\.1
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Set the version with a pre\-release and a build
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-\-set 0\.1\.1\-beta\.1\.0+build\-a\.1
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Show the current version
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-i
+0\.1\.1\-beta\.1\.0+build\-a\.1
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Increment minor part of the version 0\.1\.1, which will lead to 0\.2\.0
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-\-inc minor
+$ sycersion \-i
+0\.2\.0
+.
+.fi
+.
+.IP "" 0
+.
+.P
+When increasing one of major, minor or patch, the subsequent numbers are eather reset to 0 or pre\-release and build are removed\.
+.
+.P
+Compare the assumed current version 0\.1\.1 to the provided version
+.
+.IP "" 4
+.
+.nf
+
+$ sycersion \-c 0\.1\.1\-alpha
+0\.1\.1 > 0\.1\.1\-alpha
+.
+.fi
+.
+.IP "" 0
+.
+.SH "ENVIRONMENT"
+.
+.IP "\(bu" 4
+SYC_DEBUG=true Will display erros and show contents of the parsed options\. To be called as \fBSYC_DEBUG=true sycersion [options]\fR
+.
+.IP "" 0
+

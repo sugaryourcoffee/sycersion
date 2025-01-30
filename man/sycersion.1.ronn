@@ -1,0 +1,111 @@
+sycersion(1) -- manage application versions according to semantic versioning
+============================================================================
+
+## SYNOPSIS
+
+    `sycersion` `--init`
+    `sycersion` `-i`|`--info`
+    `sycersion` `--inc major|minor|patch`
+    `sycersion` `--set major.minor.patch[+build|-pre-release+build]`
+    `sycersion` `-p`|`--pre` `pre-release`
+    `sycersion` `-b`|`--build` `build`
+    `sycersion` `-c`|`--compare` `version`
+    `sycersion` `-h`|`--help`
+
+## Description
+
+**sycersion** is a command-line tool to manage application versions following
+the guiding principles of _semantic versioning_
+[semver.org](https://semver.org).
+
+To use **sycersion** it needs to be initialized, that is define the
+_version-file_ and the _version_. During initialization also the
+_configuration-directory_ is created. While initialization **sycersion**
+searches for files that contain a version according to semantic versioning and
+the user can select out of the list of files which version out of that files to
+intially start with.
+
+The version defined by the user is saved to a default version file, but it can
+also be chosen by the user. If the version is updated the version is written
+into that file. Within the application the version can be read from the file and
+displayed somewhere in the application's UI.
+
+**sycersion** evaluates version numbers provided that they comply to semantic
+versioning.
+
+If **sycersion** is used within a _Ruby_ application, it can be added to the
+development section within the Gemfile.
+
+## FILES
+
+    `.sycersion` is the configuration directory
+    `.sycersion/environment.yml` holds the version file and the version
+    `.sycersion/version` contains the version
+
+## OPTIONS
+
+* `--init`
+  Initializes the **sycersion** environment with _version_ and _version-file_
+* `-i`, `--info VERSION|SUMMARY`
+  Shows the current _version_ (default) or additionally information about the
+  _version-file_, the _configuration-directory_ and _code_ how to read the
+  version within an application.
+* `--inc MAJOR|MINOR|PATCH` 
+  increments the major, minor, patch part of the version.
+* `--set MAJOR.MINOR.PATCH[+BUILD|-PRE_RELEASE[+BUILD]]` 
+  sets the version where all three version parts need to be provided,
+  major.minor.patch with optionally adding a pre-release part and/or a build
+  part.
+* `--pre PRE-RELEASE`
+  Set the pre-release part in the version
+* `--build BUILD`
+  Set the build part in the version
+* `-c`, `--compare VERSION`
+  Compares the current version with the version provided following the semver
+  precedence guidline 
+* `--help`
+  Prints the command line help
+
+## EXAMPLES
+
+Initialize **sycersion**
+
+    $ sycersion --init
+
+Set the version with pre-release
+
+    $ sycersion --set 0.1.1-beta.1.0
+
+Set the version with a build
+
+    $ sycersion --set 0.1.1+build-a.1
+
+Set the version with a pre-release and a build
+
+    $ sycersion --set 0.1.1-beta.1.0+build-a.1
+
+Show the current version
+
+    $ sycersion -i
+    0.1.1-beta.1.0+build-a.1
+    
+Increment minor part of the version 0.1.1, which will lead to 0.2.0
+
+    $ sycersion --inc minor
+    $ sycersion -i
+    0.2.0
+
+When increasing one of major, minor or patch, the subsequent numbers are eather
+reset to 0 or pre-release and build are removed.
+
+Compare the assumed current version 0.1.1 to the provided version
+
+    $ sycersion -c 0.1.1-alpha
+    0.1.1 > 0.1.1-alpha
+
+## ENVIRONMENT
+
+* SYC_DEBUG=true
+  Will display erros and show contents of the parsed options. To be called as
+  `SYC_DEBUG=true sycersion [options]`
+
