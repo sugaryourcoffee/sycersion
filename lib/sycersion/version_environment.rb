@@ -42,10 +42,12 @@ module Sycersion
     def summary_of_environment
       puts "\nWhere to find the configuration files"
       puts "-------------------------------------\n"
-      puts "\nDirectory:          #{SYCERSION_DIR}"
-      puts "Configuration file: #{SYCERSION_ENV}\n"
-      puts "\nChange the configuration file only if you know what you are doing."
-      puts 'Otherwise run `sycersion --init` again.'
+      puts "\nDirectory:                      #{SYCERSION_DIR}"
+      puts "Configuration file:             #{SYCERSION_ENV}\n"
+      puts "Application version-file:       #{@app_ver_file}" if @app_ver_file
+      puts "Application version assignment: #{@version_string}" if @version_string
+      puts "\nIf you change the configuration file and encounter odd behaviour,"
+      puts 're-run `sycersion --init`.'
     end
 
     def determine_version_and_version_file
@@ -92,14 +94,14 @@ module Sycersion
     end
 
     def select_version_and_version_file
-      puts "\nFound version-files\n"
-      puts "-------------------\n"
+      puts "\nFound files with versions\n"
+      puts "-------------------------\n"
       list_versions_and_version_files
-      print "\nChoose version-file and version with number or hit return for [0]: "
+      print "\nChoose file and version with number or hit return for [0]: "
       selection = gets.chomp.to_i
-      app_version_file = @version_files.keys[selection]
-      @version = Sycersion::Semver.version(@version_files[app_version_file][0])
-      @version_string = @version_files[@version_file[1]]
+      @app_ver_file = @version_files.keys[selection]
+      @version = Sycersion::Semver.version(@version_files[@app_ver_file][0])
+      @version_string = @version_files[@app_ver_file][1].strip
     end
 
     def list_versions_and_version_files
@@ -130,13 +132,26 @@ module Sycersion
 
       In your application you can now access the version with
 
-      > File.read(#{version_file})
+      > File.read('#{version_file}')
 
-      If you application framework has a defined place to assign
-      the version you could do like so
+      If you application framework has a defined place to assign the version you
+      could do like so
 
-      > version = File.read(#{version_file})
+      > version = if File.exist? ? File.read('#{version_file}') : 'No VERSION!'
+      #{describe_adoption_of_version_file}
       CODE_SNIP
+    end
+
+    def describe_adoption_of_version_file
+      return unless @app_ver_file && @version_string
+
+      <<-PROPOSAL
+
+      In #{@app_ver_file} you can change the version assignment to read from
+      #{@version_file} and change it accordingly.
+
+      #{@version_string}
+      PROPOSAL
     end
 
     def save
@@ -147,7 +162,7 @@ module Sycersion
       FileUtils.mkdir(SYCERSION_DIR) unless Dir.exist?(SYCERSION_DIR)
       File.open(@version_file, 'w') { |f| f.write(@version) }
       File.open(SYCERSION_ENV, 'w') do |f|
-        YAML.dump([@version_file, @version], f)
+        YAML.dump([@version_file, @version, @app_ver_file, @version_string], f)
       end
     rescue IOError => e
       puts e.message
@@ -158,12 +173,17 @@ module Sycersion
         @version_file, @version = YAML.load_file(SYCERSION_ENV)
         true
       else
-        @version_file = SYCERSION_VER
-        @version = '0.1.0'
-        @version_files = {}
-        @version_string = ''
+        load_environment_default
         false
       end
+    end
+
+    def load_environment_default
+      @version_file = SYCERSION_VER
+      @version = '0.1.0'
+      @version_files = {}
+      @app_ver_file = ''
+      @version_string = ''
     end
   end
 end
