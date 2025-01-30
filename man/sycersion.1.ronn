@@ -15,20 +15,23 @@ sycersion(1) -- manage application versions according to semantic versioning
 ## Description
 
 **sycersion** is a command-line tool to manage application versions following
-the guiding principles of _semantic versioning_
+the guiding principles of _semantic versioning_ found at
 [semver.org](https://semver.org).
 
-To use **sycersion** it needs to be initialized, that is define the
-_version-file_ and the _version_. During initialization also the
+**sycersion** has a default start version of 0.1.0. This can be activitated with
+the initalization running `sycersion --init`. During this intialization another
+version can be chosen. The version is saved to the _version-file_ and also the
 _configuration-directory_ is created. While initialization **sycersion**
-searches for files that contain a version according to semantic versioning and
-the user can select out of the list of files which version out of that files to
-intially start with.
+additionally searches for files that contain a version according to semantic
+versioning and the user can select out of the list of files which version out of
+that files to intially start with.
 
-The version defined by the user is saved to a default version file, but it can
-also be chosen by the user. If the version is updated the version is written
-into that file. Within the application the version can be read from the file and
-displayed somewhere in the application's UI.
+The _version-file_ and _configuration-directory_ are also created it the user is
+setting an initial version with `sycersion --set 0.1.1`. 
+
+If the version is updated the version is written into the _version-file_. Within
+the application the version can be read from the file and displayed somewhere in
+the application's UI.
 
 **sycersion** evaluates version numbers provided that they comply to semantic
 versioning.

@@ -22,13 +22,16 @@
 .fi
 .
 .SH "Description"
-\fBsycersion\fR is a command\-line tool to manage application versions following the guiding principles of \fIsemantic versioning\fR semver\.org \fIhttps://semver\.org\fR\.
+\fBsycersion\fR is a command\-line tool to manage application versions following the guiding principles of \fIsemantic versioning\fR found at semver\.org \fIhttps://semver\.org\fR\.
 .
 .P
-To use \fBsycersion\fR it needs to be initialized, that is define the \fIversion\-file\fR and the \fIversion\fR\. During initialization also the \fIconfiguration\-directory\fR is created\. While initialization \fBsycersion\fR searches for files that contain a version according to semantic versioning and the user can select out of the list of files which version out of that files to intially start with\.
+\fBsycersion\fR has a default start version of 0\.1\.0\. This can be activitated with the initalization running \fBsycersion \-\-init\fR\. During this intialization another version can be chosen\. The version is saved to the \fIversion\-file\fR and also the \fIconfiguration\-directory\fR is created\. While initialization \fBsycersion\fR additionally searches for files that contain a version according to semantic versioning and the user can select out of the list of files which version out of that files to intially start with\.
 .
 .P
-The version defined by the user is saved to a default version file, but it can also be chosen by the user\. If the version is updated the version is written into that file\. Within the application the version can be read from the file and displayed somewhere in the application\'s UI\.
+The \fIversion\-file\fR and \fIconfiguration\-directory\fR are also created it the user is setting an initial version with \fBsycersion \-\-set 0\.1\.1\fR\.
+.
+.P
+If the version is updated the version is written into the \fIversion\-file\fR\. Within the application the version can be read from the file and displayed somewhere in the application\'s UI\.
 .
 .P
 \fBsycersion\fR evaluates version numbers provided that they comply to semantic versioning\.
