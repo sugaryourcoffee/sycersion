@@ -12,7 +12,7 @@ additionally searches for files that contain a version according to semantic
 versioning and the user can select out of the list of files which version out of
 that files to intially start with.
 
-The _version-file_ and _configuration-directory_ are also created it the user is
+The _version-file_ and _configuration-directory_ are also created if the user is
 setting an initial version with `sycersion --set 0.1.1`. 
 
 If the version is updated the version is written into the _version-file_. Within
@@ -68,7 +68,7 @@ Initialize **sycersion**
 
     $ sycersion --init
 
-Set the version with pre-release
+Set the version with a pre-release
 
     $ sycersion --set 0.1.1-beta.1.0
 
@@ -101,18 +101,33 @@ Compare the assumed current version 0.1.1 to the provided version
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake features` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake features` to run the tests. You can also run `bin/console` for an
+interactive prompt that will allow you to experiment. Running **sycersion** with
+`SYC_DEBUG=true sycersion [options]` will print debug information to the
+console.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number with `sycersion --set X.Y.Z` while the version is accessible in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To
+release a new version, update the version number with `sycersion --set X.Y.Z`
+while the version is accessible in `version.rb`, and then run `bundle exec rake
+release`, which will create a git tag for the version, push git commits and
+tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/sugaryourcoffee/sycersion. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/sugaryourcoffee/sycersion. This project is intended to be a
+safe, welcoming space for collaboration, and contributors are expected to adhere
+to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT
+License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
-Everyone interacting in the Sycersion project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/sycersion/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Sycersion project’s codebases, issue trackers, chat
+rooms and mailing lists is expected to follow the [code of
+conduct](https://github.com/[USERNAME]/sycersion/blob/master/CODE_OF_CONDUCT.md).
+
