@@ -31,20 +31,23 @@ module Sycersion
     end
 
     def version_manipulation
-      case @options
-      when ->(h) { h[:set] }
+      case @options.keys
+      when [:set]
         Sycersion::VersionSetter.new.version = (@options[:set])
-      when ->(h) { h[:pre_release] }
+      when [:pre_release]
         Sycersion::VersionSetter.new.pre_release = (@options[:pre_release])
-      when ->(h) { h[:build] }
+      when [:build]
         Sycersion::VersionSetter.new.build = (@options[:build])
-      when ->(h) { h[:inc] }
+      when [:inc]
         Sycersion::VersionIncrementer.new.increment(@options[:inc])
       end
     end
 
     def version_compare
-      puts Sycersion::VersionCompare.new.compare(@options[:compare]) if @options[:compare]
+      return unless @options[:compare]
+
+      @options[:compare].shift
+      puts Sycersion::VersionCompare.new.compare(@options[:compare])
     end
 
     def configuration_information

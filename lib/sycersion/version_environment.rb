@@ -159,7 +159,7 @@ module Sycersion
         true
       else
         @version_file = SYCERSION_VER
-        @version = '0.0.1'
+        @version = '0.1.0'
         @version_files = {}
         @version_string = ''
         false
